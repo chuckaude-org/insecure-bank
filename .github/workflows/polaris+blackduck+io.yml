@@ -7,7 +7,7 @@ on:
 
 jobs:
   polaris-blackduck-io:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     env:
       POLARIS_SERVER_URL:  ${{ secrets.POLARIS_SERVER_URL }}
