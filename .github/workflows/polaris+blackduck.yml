@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  polaris:
+  polaris+blackduck:
     runs-on: ubuntu-latest
     env:
       POLARIS_SERVER_URL:  ${{ secrets.POLARIS_SERVER_URL }}
