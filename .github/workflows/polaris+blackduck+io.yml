@@ -24,9 +24,10 @@ jobs:
 
     - name: Environment
       run: |
+        set -x
         env | sort
-        curl ${{secrets.IO_SERVER_URL}}/actuator/health
-        curl ${{secrets.WORKFLOW_SERVER_URL}}/actuator/health
+        curl -fLsS ${{secrets.IO_SERVER_URL}}/actuator/health
+        curl -fLsS ${{secrets.WORKFLOW_SERVER_URL}}/actuator/health
         
     - name: Synopsys Intelligent Security Scan
       id: prescription
@@ -35,9 +36,9 @@ jobs:
         ioServerUrl: ${{secrets.IO_SERVER_URL}}
         ioServerToken: ${{secrets.IO_SERVER_TOKEN}}
         workflowServerUrl: ${{secrets.WORKFLOW_SERVER_URL}}
-        additionalWorkflowArgs: --persona=developer --release.type=major --sast.rescan.threshold=5  --sca.rescan.threshold=5
-                  --polaris.url=${{secrets.POLARIS_SERVER_URL}} --polaris.token=${{secrets.POLARIS_ACCESS_TOKEN}} 
-                  --sensitive.package.pattern='.*(\\+\\+\\+.*(com\\/example\\/app)).*'
+        additionalWorkflowArgs: --persona=developer --release.type=major --sast.rescan.threshold=10  --sca.rescan.threshold=10 --file.change.threshold=20
+                  --polaris.url=${{secrets.POLARIS_SERVER_URL}} --polaris.token=${{secrets.POLARIS_ACCESS_TOKEN}}
+                  --sensitive.package.pattern='.*(.java|.js)$'
         stage: "IO"
 
     - name: Polaris Scan
