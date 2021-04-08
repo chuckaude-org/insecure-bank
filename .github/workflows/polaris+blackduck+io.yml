@@ -22,6 +22,12 @@ jobs:
       with:
         java-version: 8
 
+    - name: Environment
+      run: |
+        env | sort
+        curl ${{secrets.IO_SERVER_URL}}/actuator/health
+        curl ${{secrets.WORKFLOW_SERVER_URL}}/actuator/health
+        
     - name: Synopsys Intelligent Security Scan
       id: prescription
       uses: synopsys-sig/intelligent-security-scan@v1.0.3
