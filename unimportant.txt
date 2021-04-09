@@ -1,3 +1,1 @@
 This is just text
-Another pointless change
-foo
