@@ -1,4 +1,4 @@
-name: Black Duck SCA
+name: Black Duck
 
 on:
   push:
