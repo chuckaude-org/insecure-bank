@@ -40,11 +40,17 @@ jobs:
         cov-analyze --dir idir --ticker-mode none --strip-path $GITHUB_WORKSPACE $CHECKERS
         cov-commit-defects --dir idir --ticker-mode none --url $COV_URL --stream $COVERITY_PROJECT-${GITHUB_REF##*/} --scm git \
           --description $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID --target $RUNNER_OS --version $GITHUB_SHA
-        cov-format-errors --dir idir --json-output-v8 local_report.json
+        cov-format-errors --dir idir --json-output-v8 coverity-local-report.json
         $COVERITY_TOOL_HOME/node/bin/node $COVERITY_TOOL_HOME/SARIF/cov-format-sarif-for-github.js \
-          --inputFile local_report.json --outputFile sarif_report.json --githubUrl $GITHUB_SERVER_URL \
+          --inputFile coverity-local-report.json --outputFile coverity-sarif-report.json --githubUrl $GITHUB_SERVER_URL \
           --repoName $GITHUB_REPOSITORY --checkoutPath $GITHUB_REPOSITORY $GITHUB_WORKSPACE $GITHUB_SHA
 
+    - name: Upload SARIF file
+      if: ${{steps.prescription.outputs.sastScan == 'true' }}
+      uses: github/codeql-action/upload-sarif@v1
+      with:
+        sarif_file: coverity-sarif-report.json
+        
     - name: Coverity Quality Gate
       if: ${{ github.event_name != 'pull_request' }}
       run: |
