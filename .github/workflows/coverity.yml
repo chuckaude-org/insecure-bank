@@ -39,8 +39,8 @@ jobs:
           --description $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID --target $RUNNER_OS --version $GITHUB_SHA
         cov-format-errors --dir idir --json-output-v8 local_report.json
         $COVERITY_TOOL_HOME/node/bin/node $COVERITY_TOOL_HOME/SARIF/cov-format-sarif-for-github.js \
-          --inputFile local_report.json --outputFile sarif_report.json --githubUrl https://github.com \
-          --repoName chuckaude-org/insecure-bank --checkoutPath chuckaude-org/insecure-bank . $GITHUB_SHA
+          --inputFile local_report.json --outputFile sarif_report.json --githubUrl $GITHUB_SERVER_URL \
+          --repoName $GITHUB_REPOSITORY --checkoutPath $GITHUB_REPOSITORY insecure-bank $GITHUB_SHA
 
     - name: Coverity Quality Gate
       if: ${{ github.event_name != 'pull_request' }}
