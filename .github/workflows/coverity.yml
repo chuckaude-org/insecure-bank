@@ -15,7 +15,7 @@ jobs:
       COV_URL: ${{ secrets.COV_URL }}
       COV_USER: ${{ secrets.COV_USER }}
       COVERITY_PASSPHRASE: ${{ secrets.COVERITY_PASSPHRASE }}
-      COVBIN: /opt/coverity/analysis/current/bin
+      COVERITY_TOOL_HOME: /opt/coverity/analysis/current
       COVERITY_PROJECT: insecure-bank
       BLDCMD: mvn -B package -DskipTests
       CHECKERS: --webapp-security
@@ -30,12 +30,17 @@ jobs:
     - name: Coverity Full Scan
       if: ${{ github.event_name != 'pull_request' }}
       run: |
-        export PATH=$PATH:$COVBIN
+        export PATH=$PATH:$COVERITY_TOOL_HOME/bin
+        env | sort
         set -x
         cov-build --dir idir --fs-capture-search $GITHUB_WORKSPACE $BLDCMD
         cov-analyze --dir idir --ticker-mode none --strip-path $GITHUB_WORKSPACE $CHECKERS
         cov-commit-defects --dir idir --ticker-mode none --url $COV_URL --stream $COVERITY_PROJECT-${GITHUB_REF##*/} --scm git \
           --description $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID --target $RUNNER_OS --version $GITHUB_SHA
+        cov-format-errors --dir idir --json-output-v8 local_report.json
+        $COVERITY_TOOL_HOME/node/bin/node $COVERITY_TOOL_HOME/SARIF/cov-format-sarif-for-github.js \
+          --inputFile local_report.json --outputFile sarif_report.json --githubUrl https://github.com \
+          --repoName chuckaude-org/insecure-bank --checkoutPath chuckaude-org/insecure-bank . $GITHUB_SHA
 
     - name: Coverity Quality Gate
       if: ${{ github.event_name != 'pull_request' }}
