@@ -27,11 +27,14 @@ jobs:
       with:
         java-version: 8
 
+    - name: Environment Variables
+      run: |
+        env | sort
+
     - name: Coverity Full Scan
       if: ${{ github.event_name != 'pull_request' }}
       run: |
         export PATH=$PATH:$COVERITY_TOOL_HOME/bin
-        env | sort
         set -x
         cov-build --dir idir --fs-capture-search $GITHUB_WORKSPACE $BLDCMD
         cov-analyze --dir idir --ticker-mode none --strip-path $GITHUB_WORKSPACE $CHECKERS
@@ -40,7 +43,7 @@ jobs:
         cov-format-errors --dir idir --json-output-v8 local_report.json
         $COVERITY_TOOL_HOME/node/bin/node $COVERITY_TOOL_HOME/SARIF/cov-format-sarif-for-github.js \
           --inputFile local_report.json --outputFile sarif_report.json --githubUrl $GITHUB_SERVER_URL \
-          --repoName $GITHUB_REPOSITORY --checkoutPath $GITHUB_REPOSITORY insecure-bank $GITHUB_SHA
+          --repoName $GITHUB_REPOSITORY --checkoutPath $GITHUB_REPOSITORY $GITHUB_WORKSPACE $GITHUB_SHA
 
     - name: Coverity Quality Gate
       if: ${{ github.event_name != 'pull_request' }}
@@ -56,7 +59,7 @@ jobs:
     - name: Coverity Incremental Scan
       if: ${{ github.event_name == 'pull_request' && steps.changeset.outputs.added_modified != '' }}
       run: |
-        export PATH=$PATH:$COVBIN
+        export PATH=$PATH:$COVERITY_TOOL_HOME/bin
         set -x
         cov-run-desktop --dir idir --url $COV_URL --stream $COVERITY_PROJECT-$GITHUB_BASE_REF --build $BLDCMD
         cov-run-desktop --dir idir --url $COV_URL --stream $COVERITY_PROJECT-$GITHUB_BASE_REF --present-in-reference false \
