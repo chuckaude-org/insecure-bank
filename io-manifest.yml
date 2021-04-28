@@ -46,21 +46,8 @@ connectors:
 buildbreaker:
 - activityname: sast
   status:
-  - new
   - open
-  overallseverity:
-  - low
   categories:
-  - name: Unguarded read
-    severity: low
-  - name: Android application allows backups
-    severity: high
-  - name: Structurally dead code
-    severity: medium
-  - name: Dereference null return value
-    severity: medium
-  - name: exception not thrown
-    severity: medium
   - name: cross-site scripting
     severity: high
   - name: sql injection
