@@ -49,20 +49,22 @@ buildbreaker:
   - new
   - open
   overallseverity:
-  - high
+  - low
   categories:
+  - name: Unguarded read
+    severity: low
+  - name: Android application allows backups
+    severity: high
+  - name: Structurally dead code
+    severity: medium
+  - name: Dereference null return value
+    severity: medium
+  - name: exception not thrown
+    severity: medium
   - name: cross-site scripting
     severity: high
   - name: sql injection
     severity: high
-- activityname: sca
-  status:
-  - new
-  overallseverity:
-  - high
-  categories:
-  - name: cve-2015-2119
-    severity: medium
 
 # for WF client
 tool_information:
