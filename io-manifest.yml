@@ -46,7 +46,10 @@ connectors:
 buildbreaker:
 - activityname: sast
   status:
+  - new
   - open
+  overallseverity:
+  - high
   categories:
   - name: cross-site scripting
     severity: high
