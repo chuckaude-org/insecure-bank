@@ -17,4 +17,3 @@ jobs:
         architecture: x64
     - name: Run tests
       run: mvn -B package
-
