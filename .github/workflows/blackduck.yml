@@ -21,5 +21,5 @@ jobs:
     - name: Black Duck Scan
       uses: blackducksoftware/github-action@v2
       with:
-         args: --blackduck.url=${{secrets.BLACKDUCK_URL}} --blackduck.api.token=${{secrets.BLACKDUCK_TOKEN}} --detect.tools=SIGNATURE_SCAN,DETECTOR
+         args: --blackduck.url=${{secrets.BLACKDUCK_URL}} --blackduck.api.token=${{secrets.BLACKDUCK_API_TOKEN}} --detect.tools=SIGNATURE_SCAN,DETECTOR
             --detect.project.name=$PROJECT --detect.project.version.name=$BRANCH
