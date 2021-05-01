@@ -10,6 +10,8 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
+      BLACKDUCK_URL: ${{ secrets.BLACKDUCK_URL }}
+      BLACKDUCK_API_TOKEN: ${{ secrets.BLACKDUCK_API_TOKEN }}
       PROJECT: chuckaude-insecure-bank
       BRANCH: ${GITHUB_REF##*/}
 
@@ -21,5 +23,4 @@ jobs:
     - name: Black Duck Scan
       uses: blackducksoftware/github-action@v2
       with:
-         args: --blackduck.url=${{secrets.BLACKDUCK_URL}} --blackduck.api.token=${{secrets.BLACKDUCK_API_TOKEN}} --detect.tools=SIGNATURE_SCAN,DETECTOR
-            --detect.project.name=$PROJECT --detect.project.version.name=$BRANCH
+        args: --detect.project.name=$PROJECT --detect.project.version.name=$BRANCH --detect.tools=SIGNATURE_SCAN,DETECTOR

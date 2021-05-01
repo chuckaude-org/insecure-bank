@@ -17,7 +17,7 @@ jobs:
       COVERITY_PASSPHRASE: ${{ secrets.COVERITY_PASSPHRASE }}
       COVERITY_TOOL_HOME: /opt/coverity/analysis/current
       COVERITY_PROJECT: insecure-bank
-      BLDCMD: mvn -B package -DskipTests
+      BLDCMD: mvn -B clean package -DskipTests
       CHECKERS: --webapp-security
 
     steps:
